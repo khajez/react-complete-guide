@@ -10,7 +10,8 @@ const App = props => {
       {name: "Jonathan Toews", jersey: 19},
       {name: "Alex DeBrincat", jersey: 12}
     ],
-    otherState: 'some other state'
+    otherState: 'some other state',
+    showPlayers: false
   });
 
   const switchNameHandler = () => {
@@ -36,6 +37,12 @@ const App = props => {
     });   
   };
 
+  const togglePersonsHandler = () => {
+    const currentPlayersState = playerState.players;
+    const doesShow = playerState.showPlayers;
+    setPlayersState({players: currentPlayersState, showPlayers: !doesShow});
+  };
+
   const style = {
     backgroundColor: 'white',
     font: 'inherit',
@@ -48,15 +55,18 @@ const App = props => {
       <div className="App">
         <h1> Go Blackhawks!</h1>
         <p>One Goal!</p>
-        <button style={style} onClick={switchNameHandler}>Switch Name</button>
-        <Player
-          name={playerState.players[0].name} 
-          jersey={playerState.players[0].jersey}
-          changed={nameChangedHandler} > Right Winger</Player>
-
-        <Player name={playerState.players[1].name} jersey={playerState.players[1].jersey}/>
-        <Player name={playerState.players[2].name} jersey={playerState.players[2].jersey}/>
-        <Player name={playerState.players[3].name} jersey={playerState.players[3].jersey}/>
+        <button style={style} onClick={togglePersonsHandler}>Switch Name</button>
+        { playerState.showPlayers ? 
+        <div>
+          <Player
+            name={playerState.players[0].name}
+            jersey={playerState.players[0].jersey}
+            changed={nameChangedHandler} > Right Winger</Player>
+          <Player name={playerState.players[1].name} jersey={playerState.players[1].jersey}/>
+          <Player name={playerState.players[2].name} jersey={playerState.players[2].jersey}/>
+          <Player name={playerState.players[3].name} jersey={playerState.players[3].jersey}/>
+        </div> : null
+        }
       </div>
     );
 };
