@@ -5,28 +5,16 @@ import Player from './Player/Player';
 const App = props => {
   const  [ playerState, setPlayersState ] = useState({
     players: [
-      {name: "Patrick Kane", jersey: 88},
-      {name: "Marian Hossa", jersey: 81},
-      {name: "Jonathan Toews", jersey: 19},
-      {name: "Alex DeBrincat", jersey: 12}
+      {id: 'asdfg', name: "Patrick Kane", jersey: 88},
+      {id: 'pfogkp', name: "Marian Hossa", jersey: 81},
+      {id: 'sgfsb', name: "Jonathan Toews", jersey: 19},
+      {id: 'oionk',name: "Alex DeBrincat", jersey: 12}
     ],
     otherState: 'some other state',
     showPlayers: false
   });
 
-  const switchNameHandler = () => {
-    //console.log('button clicked.');
-    setPlayersState({
-      players: [
-        {name: "P. Kane", jersey: 88},
-        {name: "M. Hossa", jersey: 81},
-        {name: "J. Toews", jersey: 19},
-        {name: "A. DeBrincat", jersey: 12}
-      ]
-    });
-  };
-
-  const nameChangedHandler = (event) => {
+  const nameChangedHandler = (event, id) => {
     setPlayersState({
       players: [
         {name: event.target.value, jersey: 88},
@@ -37,6 +25,12 @@ const App = props => {
     });   
   };
 
+  const deletePlayerHandler = (index) => {
+    const currentPlayers = playerState.players;
+    currentPlayers.splice(index,1);
+    setPlayersState({players: currentPlayers, showPlayers: true});
+  };
+
   const togglePersonsHandler = () => {
     const currentPlayersState = playerState.players;
     const doesShow = playerState.showPlayers;
@@ -44,7 +38,8 @@ const App = props => {
   };
 
   const style = {
-    backgroundColor: 'white',
+    backgroundColor: 'green',
+    color: 'white',
     font: 'inherit',
     border: '1px solid blue',
     padding: '8px',
@@ -56,15 +51,18 @@ const App = props => {
   if (playerState.showPlayers) {
     players = (
       <div>
-      <Player
-        name={playerState.players[0].name}
-        jersey={playerState.players[0].jersey}
-        changed={nameChangedHandler} > Right Winger</Player>
-      <Player name={playerState.players[1].name} jersey={playerState.players[1].jersey}/>
-      <Player name={playerState.players[2].name} jersey={playerState.players[2].jersey}/>
-      <Player name={playerState.players[3].name} jersey={playerState.players[3].jersey}/>
-    </div>
+        {playerState.players.map( (p, i) => {
+            return <Player 
+                name={p.name} 
+                jersey={p.jersey} 
+                key={p.id} 
+                click={() => deletePlayerHandler(i)}
+                changed={(event) => nameChangedHandler(event, p.id)}/>
+        })}
+       </div>
     );
+
+    style.backgroundColor = 'red';
   }
 
   return (
